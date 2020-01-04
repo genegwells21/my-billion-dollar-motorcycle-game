@@ -22,7 +22,7 @@ this.ySpeed= 0;
 this.rot= 0;
 this.img = new Image();
 this.img.src = moto.png";
-this.draw= function(){
+this.draw= fun7ction(){
   var p1 = c.height = noise(t + this.x) * 0.25;
   var p2 = c.height - noise(t+5 +this.x) * 0.25;
   var grounded= 0;
@@ -34,17 +34,31 @@ this.draw= function(){
     grounded =1;
  }
  
+  if(!playing || groudned && Math.abs(this.rot) >Math.PI * 0.5) {
+    playing = false;
+    this.rSpeed = 5;
+    k.ArrowUp = 1;
+    this.x -= speed * 5;
+  }
   var angle = Math.atan2(p2-15 - this.y, (this.x+5) - this.x);
     this.y += this.ySpeed;
-  if(groudned)
-this.rot = angle;
-  
+  if(grounded && playing) {
+ 
+this.rot -= (this.rot - angle) * 0.5;
+  this.rSpeed = this.rSpeed - (angle - this.rot);
+}
+this.rSpeed += (k.ArrowLeft - k.ArrowRight) * 0.05;
+  this.rot -= this.rSpeed * 0.1;
   ctx.save();
   ctx.translate(this.x, this.y);
   ctx.drawImage(this.img, -15, -15, 30, 30);
   ctx.restore();
  var t = 0;
+var 
+  var k = {ArrowUp:0, ArrowDown:0, ArrowLeft:0, ArrowRight:0);
  function loop()  {
+           speed -= speed - (k.Arrowup - k.ArrowDown) * 0.01;
+           t=+ 10 * speed;
    ctx.fillStyle = "#19f";
    ctx.fillRect(0,0,c.width, c.height);
    
@@ -56,6 +70,12 @@ this.rot = angle;
    
    ctx.lineTo(c.width, c.height);
    ctx.fill();
+   player.draw();
+   
    requestAnimationFrame(loop);
  }
 
+  onkeydown = d=> k[d.key] = 1;
+  onkeyup = d=> k[d.key] = 0;
+  
+  loop();
